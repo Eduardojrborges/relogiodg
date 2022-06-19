@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN"
+    "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+<html>
+<head>
+    <meta name="viewport" content="target-densitydpi=device-dpi" />
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="email=no" />
+    <link rel="stylesheet" href="style.css">
+
+	<script>
+
+		function updateTime()
+		{
+			var now = new Date();
+
+			document.getElementById("time").innerHTML = formateTime(now);
+			document.getElementById("date").innerHTML = formateDate(now);
+			setTimeout(updateTime, 1000);
+		}
+
+    var lang = 'pt_br';
+
+    var texts = {
+      'en_us': {
+        weekDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        getFormatted: function(date) {
+          return date.toDateString();
+        }
+      },
+      'pt_br': {
+        weekDays: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+        months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+        getFormatted: function(date) {
+          return texts[lang].weekDays[date.getDay()] + ", " + fillZeros(date.getDate()) + " de " + texts[lang].months[date.getMonth()] + " de " + date.getFullYear();
+        }
+      }
+    };
+
+		function formateDate(date)
+		{
+      return texts[lang].getFormatted(date);
+		}
+
+		function formateTime(date)
+		{
+			return fillZeros(date.getHours()) + ":" + fillZeros(date.getMinutes()) + ":" + fillZeros(date.getSeconds());
+		}
+
+		function fillZeros(value)
+		{
+			return (value < 10 ? "0" : "") + value;
+		}
+
+	</script>
+</head>
+<body>
+    <div id="mainDiv">
+        <div id="wrapper">
+            <div id="bar"></div>
+
+            <div id="infoContainer">
+                <div id="dateDiv">
+                    <span id="date"></span>
+                </div>
+                <div id="timeDiv">
+                    <span id="time"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="overlay"></div>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script src="dsplay-data.js"></script>
+    <script>
+      $(function() {
+
+        if (config.locale && typeof(config.locale) === 'string') {
+          config.locale = config.locale.toLowerCase();
+          if (texts[config.locale]) {
+            lang = config.locale;
+          }
+        }
+
+        updateTime();
+        
+        if (template.barColor) {
+           $("#bar").css("background-color", template.barColor);
+        }
+
+        if (template.barOpacity) {
+           $("#bar").css("opacity", template.barOpacity);
+        }
+
+        if (template.dateColor) {
+           $("#dateDiv").css("color", template.dateColor);
+        }
+
+        if (template.timeColor) {
+           $("#timeDiv").css("color", template.timeColor);
+        }
+
+        if (template.background) {
+          $("#mainDiv").css("background-image", "url('" + template.background + "')");
+        }
+
+        $('#overlay').fadeOut(500);
+      });
+    </script>
+</body>
+</html>

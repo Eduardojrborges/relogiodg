@@ -1,7 +1,7 @@
 // fontSize hack to test outside DSPLAY
 
 var template = {
-  background: "test/relogio-bg.jpg",
+  background: "tudo.jpg",
   barColor: '#FFF',
   barOpacity: .2,
   dateColor: '#999',
